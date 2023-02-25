@@ -2,7 +2,11 @@
 #include "student.hpp"
 #include <gtest/gtest.h>
 
-TEST(CheckStructure, CanAddStudentToDb_Req1_Req2)
+struct DatabaseTest : ::testing::Test {
+    Database db;
+};
+
+TEST_F(DatabaseTest, CanAddStudentToDb_Req1_Req2)
 {
     Student adam {
         "Adam",
@@ -13,16 +17,14 @@ TEST(CheckStructure, CanAddStudentToDb_Req1_Req2)
         Gender::Male
     };
 
-    Database db;
     EXPECT_TRUE(db.add(adam));
     EXPECT_FALSE(db.add(adam));
 };
 
-TEST(DisplayDb, DisplayEmptyDb)
+TEST_F(DatabaseTest, DisplayEmptyDb)
 {
-    Database db;
     auto content = db.show();
-    auto expected ="";
+    auto expected = "";
     EXPECT_EQ(content, expected);
 };
 
