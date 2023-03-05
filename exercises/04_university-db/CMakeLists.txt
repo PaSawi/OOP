@@ -1,24 +1,27 @@
 cmake_minimum_required(VERSION 3.11)
 project(student-database)
-add_executable(${PROJECT_NAME} src/main.cpp src/database.cpp src/student.cpp)
-target_compile_options(${PROJECT_NAME} PRIVATE -Wextra -Werror -Wpedantic -Wconversion -O3 -std=c++20)
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(SOURCES src/database.cpp src/student.cpp)
+set(FLAGS -Wextra -Werror -Wpedantic -Wconversion -O3 -std=c++20)
 
 include(FetchContent)
 FetchContent_Declare(
   googletest
   URL https://github.com/google/googletest/archive/03597a01ee50ed33e9dfd640b249b4be3799d395.zip
 )
+
 # For Windows: Prevent overriding the parent project's compiler/linker settings
 set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 FetchContent_MakeAvailable(googletest)
 
-enable_testing()
+add_executable(${PROJECT_NAME} ${SOURCES} src/main.cpp)
+target_compile_options(${PROJECT_NAME} PRIVATE ${FLAGS})
 
-add_executable(${PROJECT_NAME}-ut src/test.cpp src/database.cpp src/student.cpp)
-target_compile_options(${PROJECT_NAME}-ut PRIVATE -Wextra -Werror -Wpedantic -Wconversion -O3 -std=c++20)
+enable_testing()
+add_executable(${PROJECT_NAME}-ut ${SOURCES} src/test.cpp)
+target_compile_options(${PROJECT_NAME}-ut PRIVATE ${FLAGS})
 target_link_libraries(${PROJECT_NAME}-ut GTest::gtest_main)
 
 include(GoogleTest)
