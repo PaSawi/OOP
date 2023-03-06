@@ -106,9 +106,9 @@ public:
 
     // override from Cargo
     size_t getPrice() const override { return basePrice_ * static_cast<int>(rarity_); }
-    std::string getName() const override { return name_ ;}
-    size_t getAmount() const override { return amount_ ;}
-    size_t getBasePrice() const override { return basePrice_ ;}
+    std::string getName() const override { return name_; }
+    size_t getAmount() const override { return amount_; }
+    size_t getBasePrice() const override { return basePrice_; }
 
     Cargo& operator+=(size_t amount)
     {
