@@ -36,7 +36,7 @@ public:
     size_t getAmount() const override { return amount_; }
     size_t getBasePrice() const override { return basePrice_; }
 
-    Fruit& operator--()
+    virtual Cargo& operator--()
     {
         --spoilByTime_;
         return *this;
@@ -56,7 +56,7 @@ public:
     size_t getSpoilByTime() const { return spoilByTime_; }
     size_t getExpiryDate() const { return expiryDate_; }
 
-private:
+protected:
     size_t spoilByTime_ { 0 };
     size_t expiryDate_;
 };
@@ -72,13 +72,13 @@ public:
     size_t getAmount() const override { return amount_; }
     size_t getBasePrice() const override { return basePrice_; }
 
-    Cargo& operator+=(size_t amount)
+    Cargo& operator+=(size_t amount) override
     {
         amount_ += amount;
         return *this;
     }
 
-    Cargo& operator-=(size_t amount)
+    Cargo& operator-=(size_t amount) override
     {
         amount_ -= amount;
         return *this;
@@ -125,4 +125,30 @@ public:
 
 private:
     Rarity rarity_;
+};
+//*************************************************************************
+
+class DryFruit : public Fruit {
+public:
+    // override from Cargo
+
+    size_t getPrice() const override
+    {
+        if (spoilByTime_ >= expiryDate_)
+            return 0;
+        return static_cast<size_t>(3 * basePrice_ * ((float)(expiryDate_ - spoilByTime_)) / expiryDate_);
+    }
+    std::string getName() const override { return "Dry Fruit"; }
+
+    Cargo& operator--() override
+    {
+        if (++counter_ == 10) {
+            ++spoilByTime_;
+            counter_ = 0;
+        }
+        return *this;
+    };
+
+private:
+    size_t counter_ { 0 };
 };
