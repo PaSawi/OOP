@@ -1,4 +1,5 @@
 #include "student.hpp"
+
 Student::Student(
     std::string name,
     std::string lastName,
@@ -6,7 +7,7 @@ Student::Student(
     int indexNumber,
     std::string pesel,
     Gender gender)
-    
+
     : name_(name)
     , lastName_(lastName)
     , address_(address)
@@ -15,6 +16,7 @@ Student::Student(
     , gender_(gender)
 {
 }
+
 std::string Student::show() const
 {
     return name_ + " " 
